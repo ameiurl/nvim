@@ -49,41 +49,34 @@ local options = {
 	ttyfast 	   = true, 							  -- same as above
 	fileencodings  = "ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1",
 	helplang       = "cn",
+	fixendofline   = false,
 }
 -- vim.opt.iskeyword:append "-"   -- add '-' to iskeyword chars
 vim.opt.iskeyword:append "$"   -- add '$' to iskeyword chars
 
-vim.loader.enable()
+-- vim.loader.enable()
 
 for k, v in pairs(options) do
 	vim.opt[k] = v
 end
 
--- netrw settings
-vim.g.netrw_liststyle = 3     -- tree style listing
-vim.g.netrw_browse_split = 4  -- open file in previous window
-vim.g.netrw_banner = 0        -- no banner
-vim.g.netrw_usetab = 1        -- use netrw-<C-Tab> mapping
-vim.g.netrw_wiw = 32          -- window width (cols)
-vim.g.shada = "'0f0"          -- what to save in the ShaDa file
-
 vim.g.mapleader = ','
 vim.g.maplocalleader = ';'
 
+vim.api.nvim_create_autocmd({'TextYankPost'}, { callback = function() vim.highlight.on_yank {higroup="Visual", timeout=300} end })
+vim.api.nvim_create_autocmd({"BufReadPost"}, {
+    pattern = {"*"},
+    callback = function()
+        if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+            vim.api.nvim_exec("normal! g'\"",false)
+        end
+    end
+})
+
 vim.cmd [[
-	set nofixendofline  "Disable automatic line wrapping at the end of the file
-
-    " highlight yanked text
-    autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup=(vim.fn['hlexists']('HighlightedyankRegion') > 0 and 'HighlightedyankRegion' or 'IncSearch'), timeout=500}
-
 	" 插入模式下用绝对行号, 普通模式下用相对
 	autocmd InsertEnter * :set norelativenumber number
 	autocmd InsertLeave * :set relativenumber
-
-	" 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-	if has("autocmd")
-	  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-	endif
 
 	" 回车即选中当前项
 	autocmd FileType qf nnoremap <buffer> <CR> <CR>:cclose<CR>
