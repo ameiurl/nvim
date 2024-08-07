@@ -11,28 +11,25 @@ return
                 "<leader>f", function() require("telescope.builtin").find_files() end, desc = "Find Files",
             },
             {
-                "<leader>tw", function() require("telescope.builtin").grep_string() end, desc = "Find Files",
+                "<leader>tw", function() require("telescope.builtin").grep_string() end, desc = "Telescope grep symbol under cursor",
             },
             {
-                "<leader>ta", function() require("telescope.builtin").live_grep() end, desc = "Find Files",
+                "<leader>ta", function() require("telescope.builtin").live_grep() end, desc = "Telescope live-grep all files",
             },
             {
-                "<leader>th", function() require("telescope.builtin").oldfiles() end, desc = "Find Files",
+                "<leader>th", function() require("telescope.builtin").oldfiles() end, desc = "Telescope list history",
             },
             {
-                "<leader>tt", function() require("telescope.builtin").resume() end, desc = "Find Files",
+                "<leader>tt", function() require("telescope.builtin").resume() end, desc = "Telescope resume last session",
             },
             {
-                "<leader>ts", function() require("telescope.builtin").treesitter() end, desc = "Find Files",
+                "<leader>ts", function() require("telescope.builtin").treesitter() end, desc = "Telescope list treesitter symbols in buffer",
             },
             {
-                "<leader>tm", function() require("telescope.builtin").marks() end, desc = "Find Files",
+                "<leader>tm", function() require("telescope.builtin").marks() end, desc = "Telescope list marks",
             },
             {
-                "<leader>td", function() require("telescope.builtin").diagnostics() end, desc = "Find Files",
-            },
-            {
-                "<leader>b", function() require("telescope.builtin").buffers() end, desc = "Find Files",
+                "<leader>td", function() require("telescope.builtin").diagnostics() end, desc = "Telescope list diagnostics",
             },
         },
         config = function()
@@ -158,5 +155,35 @@ return
             }
             telescope.load_extension("fzf")
             telescope.load_extension("ui-select")
+
+            vim.keymap.set('n', '<leader>b', function ()
+                require('telescope.builtin').buffers(
+                    require('telescope.themes').get_dropdown {
+                        previewer = false,
+                        only_cwd = vim.fn.haslocaldir() == 1,
+                        show_all_buffers = false,
+                        sort_mru = true,
+                        ignore_current_buffer = true,
+                        sorter = require('telescope.sorters').get_substr_matcher(),
+                        selection_strategy = 'closest',
+                        path_display = { 'shorten' },
+                        layout_strategy = 'center',
+                        winblend = 0,
+                        layout_config = { width = 70,height = 25 },
+                        color_devicons = true,
+                    }
+                )
+            end)
+            vim.keymap.set('n', '<leader>tg', "<CMD>lua require('telescope.builtin').grep_string { search = 'n '.. vim.fn.expand('<cword>')}<CR>", 
+                { desc = "Telescope grep n+ under cursor word" })
+            vim.keymap.set('n', '<leader>tf', "<CMD>lua require('telescope.builtin').grep_string({ search = vim.fn.input('Grep For > ')})<CR>",   
+                { desc = "Telescope list buffer" })
+            vim.keymap.set("n", "<leader>t", function()
+				-- You can pass additional configuration to Telescope to change the theme, layout, etc.
+				require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+					winblend = 10,
+					previewer = false,
+				}))
+			end)
         end,
     }

@@ -1,3 +1,3 @@
-require('core.options')
-require('core.mappings')
-require('core.lazy')
+require('config.options')
+require('config.mappings')
+require('config.lazy')
