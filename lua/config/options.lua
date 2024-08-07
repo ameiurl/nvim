@@ -148,38 +148,9 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 		end)
 	end,
 })
--- close quickfix menu after selecting choice
-vim.api.nvim_create_autocmd(
-  "FileType", {
-  pattern={"qf"},
-  command=[[nnoremap <buffer> <CR> <CR>:cclose<CR>]]}
-)
 
-vim.api.nvim_create_autocmd(
-  "FileType", {
-  pattern={"qf"},
-  command=[[nnoremap <buffer> <ESC> :cclose<CR>]]}
-)
-
+-- 插入模式下用绝对行号, 普通模式下用相对
 vim.cmd [[
-	" 插入模式下用绝对行号, 普通模式下用相对
 	autocmd InsertEnter * :set norelativenumber number
 	autocmd InsertLeave * :set relativenumber
-
-	" quickfix高度
-	au FileType qf call AdjustWindowHeight(5, 20)
-	function! AdjustWindowHeight(minheight, maxheight)
-		let l = 1
-		let n_lines = 0
-		let w_width = winwidth(0)
-		while l <= line('$')
-			" number to float for division
-			let l_len = strlen(getline(l)) + 0.0
-			let line_width = l_len/w_width
-			let n_lines += float2nr(ceil(line_width))
-			let l += 1
-		endw
-		exe max([min([n_lines, a:maxheight]), a:minheight]) .  "wincmd _"
-	endfunction
 ]]
-
