@@ -1,3 +1,4 @@
+vim.keymap.set('n', '<leader>gg', [[<Cmd>LazyGit<CR>]])
 return {
     {
         "lewis6991/gitsigns.nvim",

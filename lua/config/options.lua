@@ -62,9 +62,3 @@ end
 
 vim.g.mapleader = ','
 vim.g.maplocalleader = ';'
-
--- 插入模式下用绝对行号, 普通模式下用相对
-vim.cmd [[
-	autocmd InsertEnter * :set norelativenumber number
-	autocmd InsertLeave * :set relativenumber
-]]

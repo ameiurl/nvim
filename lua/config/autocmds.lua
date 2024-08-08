@@ -1,5 +1,14 @@
+local function augroup(name)
+	return vim.api.nvim_create_augroup('amei_' .. name, {})
+end
 -- autocmds
-vim.api.nvim_create_autocmd({'TextYankPost'}, { callback = function() vim.highlight.on_yank {higroup="Visual", timeout=300} end })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight on yank",
+	callback = function()
+		vim.highlight.on_yank({ higrou = "IncSearch", timeout = 400 })
+	end,
+	group = augroup("highlight_yank"),
+})
 vim.api.nvim_create_autocmd({"BufReadPost"}, {
     pattern = {"*"},
     callback = function()
@@ -44,30 +53,42 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- Close some buffers with specific filetypes using `q`.
 -- This autocmd was copied from LazyVim.
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("ronisbr_close_with_q", { clear = true }),
-  pattern = {
-    "PlenaryTestPopup",
-    "help",
-    "lspinfo",
-    "notify",
-    "qf",
-    "spectre_panel",
-    "startuptime",
-    "tsplayground",
-    "neotest-output",
-    "checkhealth",
-    "neotest-summary",
-    "neotest-output-panel",
-  },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-  end,
+    group = vim.api.nvim_create_augroup("ronisbr_close_with_q", { clear = true }),
+    pattern = {
+        "PlenaryTestPopup",
+        "help",
+        "lspinfo",
+        "notify",
+        "qf",
+        "spectre_panel",
+        "startuptime",
+        "tsplayground",
+        "neotest-output",
+        "checkhealth",
+        "neotest-summary",
+        "neotest-output-panel",
+    },
+    callback = function(event)
+        vim.bo[event.buf].buflisted = false
+        vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    end,
 })
 
-local function augroup(name)
-	return vim.api.nvim_create_augroup('amei_' .. name, {})
-end
+vim.filetype.add({
+	desc = "Set filetype to bigfile for files larger than 1MB",
+	pattern = {
+		[".*"] = {
+			function(path, buf)
+				return vim.bo[buf].filetype ~= "bigfile"
+						and path
+						and vim.fn.getfsize(path) > 1024 * 1024 -- 1MB
+						and "bigfile"
+					or nil
+			end,
+		},
+	},
+})
+
 -- Disable some features for big files.
 vim.api.nvim_create_autocmd({ 'FileType' }, {
 	group = augroup('bigfile'),
@@ -84,3 +105,16 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd("InsertLeave", {
+	desc = "Set relativenumber",
+	pattern = "*",
+	command = "set relativenumber",
+	group = augroup("set_relativenumber_number"),
+})
+
+vim.api.nvim_create_autocmd({ "InsertEnter"}, {
+	desc = "Set norelativenumber number",
+	pattern = "*",
+	command = "set norelativenumber number",
+	group = augroup("set_norelativenumber_number"),
+})

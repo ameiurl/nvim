@@ -53,6 +53,11 @@ map('n', '<C-S-Right>', [[2<C-w>>]])
 map('n', '<C-n>', [[<Cmd>bnext<CR>]])
 map('n', '<C-p>', [[<Cmd>bprev<CR>]])
 
+-- Ctrl+V for pasting from system clipboard
+map("i", "<c-v>", "<c-r>+", { silent = true })
+
+-- Search for visually selected text
+map("v", "//", 'y/<C-R>"<cr>', { silent = true })
 
 -- Visual -----------------------------------------------------------------------------
 
@@ -116,28 +121,28 @@ end, { silent = true, desc = 'Yank absolute path' })
 -- Plugin keybinds --------------------------------------------------------------------
 
 -- vim-expand-region
-map('v', 'v', [[<Plug>(expand_region_expand)]])
-map('v', 'v', [[<Plug>(expand_region_expand)]])
+-- map('v', 'v', [[<Plug>(expand_region_expand)]])
+-- map('v', 'v', [[<Plug>(expand_region_expand)]])
 
 -- vim-easy-align
 -- map('n', '<Leader>a', [[<Plug>(EasyAlign)]])
 -- map('v', '<Leader>a', [[<Plug>(EasyAlign)]])
 
 -- vim-eft
-map('n', ';', [[<Plug>(eft-repeat)]])
-map('x', ';', [[<Plug>(eft-repeat)]])
-map('n', 'f', [[<Plug>(eft-f)]])
-map('x', 'f', [[<Plug>(eft-f)]])
-map('o', 'f', [[<Plug>(eft-f)]])
-map('n', 'F', [[<Plug>(eft-F)]])
-map('x', 'F', [[<Plug>(eft-F)]])
-map('o', 'F', [[<Plug>(eft-F)]])
-map('n', 't', [[<Plug>(eft-t)]])
-map('x', 't', [[<Plug>(eft-t)]])
-map('o', 't', [[<Plug>(eft-t)]])
-map('n', 'T', [[<Plug>(eft-T)]])
-map('x', 'T', [[<Plug>(eft-T)]])
-map('o', 'T', [[<Plug>(eft-T)]])
+--map('n', ';', [[<Plug>(eft-repeat)]])
+--map('x', ';', [[<Plug>(eft-repeat)]])
+--map('n', 'f', [[<Plug>(eft-f)]])
+--map('x', 'f', [[<Plug>(eft-f)]])
+--map('o', 'f', [[<Plug>(eft-f)]])
+--map('n', 'F', [[<Plug>(eft-F)]])
+--map('x', 'F', [[<Plug>(eft-F)]])
+--map('o', 'F', [[<Plug>(eft-F)]])
+--map('n', 't', [[<Plug>(eft-t)]])
+--map('x', 't', [[<Plug>(eft-t)]])
+--map('o', 't', [[<Plug>(eft-t)]])
+--map('n', 'T', [[<Plug>(eft-T)]])
+--map('x', 'T', [[<Plug>(eft-T)]])
+--map('o', 'T', [[<Plug>(eft-T)]])
 
 -- lazyGit
-map('n', '<leader>gg', [[<Cmd>LazyGit<CR>]])
+-- map('n', '<leader>gg', [[<Cmd>LazyGit<CR>]])
