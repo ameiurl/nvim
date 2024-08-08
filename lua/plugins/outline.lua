@@ -14,7 +14,7 @@ return {
                 auto_close = true,
             },
             keymaps = {
-                goto_location = 'l',
+                goto_location = '<cr>',
             },
         }
     end,
