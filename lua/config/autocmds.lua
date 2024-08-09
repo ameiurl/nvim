@@ -44,6 +44,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "Normal" })
     vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 
+    vim.cmd('highlight DiagnosticError guifg=red')
+    vim.cmd('highlight DiagnosticVirtualTextError guifg=red')
+
     vim.cmd("highlight Winbar guibg=none")
 
     -- vim.cmd("highlight Comment guifg=#475558")

@@ -51,10 +51,7 @@ local options = {
 	helplang       = "cn",
 	fixendofline   = false,
 }
--- vim.opt.iskeyword:append "-"   -- add '-' to iskeyword chars
 vim.opt.iskeyword:append "$"   -- add '$' to iskeyword chars
-
--- vim.loader.enable()
 
 for k, v in pairs(options) do
 	vim.opt[k] = v

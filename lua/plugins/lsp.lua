@@ -26,6 +26,12 @@ return {
             })
         end
 
+        local diagnostics_icons = {
+            ERROR = ' ',
+            WARN = '',
+            HINT = '',
+            INFO = ' ',
+        }
         local config = {
             virtual_text = {
                 severity = {
@@ -33,6 +39,16 @@ return {
                 },
                 spacing  = 2,
                 prefix   = "⋮",
+                format = function(diagnostic)
+                    local severity = vim.diagnostic.severity[diagnostic.severity]
+                    local icon = diagnostics_icons[severity]
+                    return string.format(
+                        '%s %s: %s ',
+                        icon,
+                        diagnostic.source,
+                        diagnostic.message
+                    )
+                end,
             },
             signs = {
                 active = signs,
@@ -41,7 +57,7 @@ return {
             severity_sort    = true,
             underline = {
                 severity = {
-                    -- min = vim.diagnostic.severity.INFO,
+                    min = vim.diagnostic.severity.INFO,
                 },
             },
             float = {
