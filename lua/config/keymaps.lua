@@ -50,9 +50,17 @@ map('n', '<C-n>', [[<Cmd>bnext<CR>]])
 map('n', '<C-p>', [[<Cmd>bprev<CR>]])
 
 -- Ctrl+V for pasting from system clipboard
-map("v", "<C-c>", '"+y') -- copy
-map("v", "<C-x>", '"+d') -- cut
-map("i", "<c-v>", "<c-r>+", { silent = true })
+vim.cmd [[
+    " system clipboard
+    nmap <c-c> "+y
+    vmap <c-c> "+y
+    nmap <c-v> "+p
+    vmap <c-x> "+d
+    inoremap <c-v> <c-r>+
+    cnoremap <c-v> <c-r>+
+    " use <c-r> to insert original character without triggering things like auto-pairs
+    inoremap <c-r> <c-v>
+]]
 
 -- Search for visually selected text
 map("v", "//", 'y/<C-R>"<cr>', { silent = true })
