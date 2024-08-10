@@ -89,27 +89,6 @@ map('x', 'p', [["_dP]])
 -- Select Last Copy
 map('n', 'gV', [[`[v`] ]])
 
--- Replace text command
-local function replace_all()
-	local query = vim.fn.strcharpart(
-		vim.fn.getline(vim.fn.line('.')),
-		vim.fn.min({
-			vim.fn.charcol('.'),
-			vim.fn.charcol('v'),
-		}) - 1,
-		vim.fn.abs(vim.fn.charcol('.') - vim.fn.charcol('v')) + 1
-	)
-
-	vim.fn.inputsave()
-	local answer = vim.fn.input("Replace text: ", query)
-	vim.api.nvim_command(
-		'%s/\\V' .. query:gsub('/','\\/') .. '/' .. answer:gsub('/','\\/') .. '/ge'
-	)
-	vim.fn.inputrestore()
-	vim.api.nvim_feedkeys('v', 'n', false)
-end
-map('x', '<C-r>', replace_all, { desc = "Replace all selected text in buffer" })
-
 -- Yank buffer's relative path to clipboard
 map('n', '<Leader>y', function()
 	local path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':~:.') or ''
