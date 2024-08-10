@@ -54,7 +54,7 @@ vim.cmd [[
     " system clipboard
     nmap <c-c> "+y
     vmap <c-c> "+y
-    nmap <c-v> "+p
+    imap <c-v> "+p
     vmap <c-x> "+d
     inoremap <c-v> <c-r>+
     cnoremap <c-v> <c-r>+

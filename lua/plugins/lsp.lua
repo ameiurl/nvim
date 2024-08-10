@@ -57,7 +57,7 @@ return {
             severity_sort    = true,
             underline = {
                 severity = {
-                    min = vim.diagnostic.severity.INFO,
+                    min = vim.diagnostic.severity.HINT,
                 },
             },
             float = {
