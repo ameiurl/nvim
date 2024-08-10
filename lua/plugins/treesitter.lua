@@ -18,12 +18,7 @@ return {
                 'css',
                 'html',
                 'markdown',
-                'php',
-                'lua',
-                "c",
-                "vim",
-                "vimdoc",
-                "query"
+                'php'
             },
             sync_installed = false, -- install languages synchronously (applies to above)
             ignore_installed = { "" }, -- list of parsers to ignore installing
