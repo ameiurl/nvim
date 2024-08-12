@@ -8,6 +8,9 @@ return {
             "Issafalcon/lsp-overloads.nvim",
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
+            "jose-elias-alvarez/null-ls.nvim",
+            "jay-babu/mason-null-ls.nvim",
+            "j-hui/fidget.nvim",
         }
     },
     config = function()
@@ -124,6 +127,7 @@ return {
             map('n', "go", require("telescope.builtin").lsp_definitions, { desc = "Jump to the definition of the word under your cursor" })
             map('n', "gl", require("telescope.builtin").lsp_references, { desc = "Find references for the word under your cursor" })
 
+            map('n', '<leader>ca', vim.lsp.buf.code_action, {})
             -- Formatting commands
             vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(opts)
                 local format_opts = { async = true }
@@ -183,5 +187,59 @@ return {
                 require('lspconfig')[server_name].setup(opts)
             end,
         }
+
+        require('fidget').setup()
+
+        -- Null-Ls for formatting and linting using external tools.
+        local null_ls = require 'null-ls'
+        null_ls.setup {
+            sources = {
+                -- Eslint
+                null_ls.builtins.code_actions.eslint_d,
+                null_ls.builtins.formatting.eslint_d.with {
+                    condition = function(utils)
+                        return utils.root_has_file { '.eslintrc.js', '.eslintrc.json' }
+                    end,
+                },
+                null_ls.builtins.diagnostics.eslint_d.with {
+                    condition = function(utils)
+                        return utils.root_has_file { '.eslintrc.js', '.eslintrc.json' }
+                    end,
+                },
+
+                -- Markdown.
+                null_ls.builtins.formatting.markdownlint,
+                null_ls.builtins.diagnostics.markdownlint.with {
+                    extra_args = { '--disable', 'line-length' },
+                },
+
+                -- Php (PHPCS, PHPCBF, PHPStan)
+                null_ls.builtins.diagnostics.phpcs.with { -- Use the local installation first
+                    diagnostics_format = '#{m} (#{c}) [#{s}]', -- Makes PHPCS errors more readeable
+                    only_local = 'vendor/bin',
+                },
+                null_ls.builtins.formatting.phpcbf.with {
+                    prefer_local = 'vendor/bin',
+                },
+                null_ls.builtins.diagnostics.phpstan,
+
+                -- Prettier and spelling
+                null_ls.builtins.formatting.prettierd,
+
+                -- Spelling
+                null_ls.builtins.completion.spell, -- You still need to execute `:set spell`
+                -- null_ls.builtins.diagnostics.cspell,
+                null_ls.builtins.code_actions.cspell,
+            },
+        }
+
+        -- Install linting and formating apps using Mason.
+        local mason_nullls = require 'mason-null-ls'
+        mason_nullls.setup {
+            ensure_installed = { 'stylua', 'jq', 'prettierd', 'markdownlint' },
+            automatic_installation = true,
+            automatic_setup = true,
+        }
+
     end,
 }
