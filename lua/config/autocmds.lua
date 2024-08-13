@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight on yank",
 	callback = function()
 		-- vim.highlight.on_yank({ higrou = "IncSearch", timeout = 400 })
-        return (not vim.v.event.visual) and require'vim.highlight'.on_yank {higroup='Visual', timeout=500}
+        return require'vim.highlight'.on_yank {higroup='IncSearch', timeout=500}
 	end,
 	group = augroup("highlight_yank"),
 })
@@ -47,6 +47,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
     vim.cmd('highlight DiagnosticError guifg=red')
     vim.cmd('highlight DiagnosticVirtualTextError guifg=red')
+    vim.cmd('highlight IncSearch cterm=reverse gui=reverse')
 
     vim.cmd("highlight Winbar guibg=none")
 
