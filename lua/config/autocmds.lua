@@ -143,19 +143,6 @@ local last_echo = { false, -1, -1 }
 -- The timer used for displaying a diagnostic in the commandline.
 local echo_timer = nil
 
--- The timer after which to display a diagnostic in the commandline.
-local echo_timeout = 250
-
--- The highlight group to use for warning messages.
-local warning_hlgroup = 'WarningMsg'
-
--- The highlight group to use for error messages.
-local error_hlgroup = 'ErrorMsg'
-
--- If the first diagnostic line has fewer than this many characters, also add
--- the second line to it.
-local short_line_limit = 20
-
 vim.api.nvim_create_autocmd("CursorMoved", {
     group = vim.api.nvim_create_augroup("display_lsp_diags_in_command_line", { clear = true }),
     pattern = "*",
@@ -194,7 +181,9 @@ vim.api.nvim_create_autocmd("CursorMoved", {
             local message = lines[1]
             local trimmed = false
 
-            if #lines > 1 and #message <= short_line_limit then
+            -- If the first diagnostic line has fewer than this many characters, also add
+            -- the second line to it.
+            if #lines > 1 and #message <= 20 then
                 message = message .. ' ' .. lines[2]
             end
 
@@ -203,11 +192,13 @@ vim.api.nvim_create_autocmd("CursorMoved", {
             end
 
             local kind = 'warning'
-            local hlgroup = warning_hlgroup
+            -- The highlight group to use for warning messages.
+            local hlgroup = 'WarningMsg' 
 
             if diag.severity == vim.lsp.protocol.DiagnosticSeverity.Error then
                 kind = 'error'
-                hlgroup = error_hlgroup
+                -- The highlight group to use for error messages.
+                hlgroup = 'ErrorMsg'
             end
 
             local chunks = {
@@ -216,6 +207,6 @@ vim.api.nvim_create_autocmd("CursorMoved", {
             }
 
             vim.api.nvim_echo(chunks, false, {})
-        end, echo_timeout)
+        end, 250) -- The timer after which to display a diagnostic in the commandline.
     end,
 })
