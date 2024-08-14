@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("highlight_yank", {}),
 })
 vim.api.nvim_create_autocmd({"BufReadPost"}, {
-    desc = "go to last loc when opening a buffer"
+    desc = "go to last loc when opening a buffer",
     pattern = {"*"},
     callback = function()
         if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
