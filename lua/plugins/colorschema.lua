@@ -3,7 +3,8 @@ return {
     'ameiurl/seoul256.nvim',
     config = function()
         vim.g.seoul256_italic_comments = true
-        vim.g.seoul256_contrast = true
+        vim.g.seoul256_contrast = false
+        vim.g.seoul256_hl_current_line = true
         vim.cmd.colorscheme("seoul256")
         vim.cmd.hi("phpVarSelector guifg=#FFBFBD")
         vim.cmd.hi("phpStringSingle guifg=#BCDDBD")
