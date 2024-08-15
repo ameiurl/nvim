@@ -18,10 +18,9 @@ map('n', '<C-y>', [[5<C-y>]])
 map('n', 'K', [[<Esc>5<up>]])
 map('n', 'J', [[<Esc>5<down>]])
 
-map('n', 'k', [[gk]])
-map('n', 'gk', [[k]])
-map('n', 'j', [[gj]])
-map('n', 'gj', [[j]])
+-- better up/down
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 map('n', 'n', [[nzz]])
 map('n', 'N', [[Nzz]])

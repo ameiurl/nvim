@@ -1,25 +1,22 @@
 return {
   {
-    'ameiurl/seoul256.vim',
+    'ameiurl/seoul256.nvim',
     config = function()
-        vim.cmd [[
-            let g:seoul256_background = 236
-            colorscheme seoul256 
-            hi phpVarSelector       guifg=#FFBFBD              gui=none
-            "hi phpIdentifier        guifg=#C8C8C8              gui=none
-            "hi phpVarSelector       guifg=#C8C8C8              gui=none
-            hi phpStringSingle      guifg=#BCDDBD              gui=none
-            hi phpStringDouble      guifg=#BCDDBD              gui=none
-            hi phpFunctions         guifg=#e2c792              gui=none
-            hi phpMethods           guifg=#e2c792              gui=none
-            hi phpSpecialFunction   guifg=#e2c792              gui=none
-            hi phpBaselib           guifg=#e2c792              gui=none
-            hi phpNumber            guifg=#e55561              gui=none
-            hi phpFloat             guifg=#e55561              gui=none
-            hi htmlTag              guifg=#98BC99              gui=none
-            hi htmlEndTag           guifg=#98BC99              gui=none
-            hi javaScript           guifg=#C8C8C8              gui=none
-        ]]
+        vim.g.seoul256_italic_comments = true
+        vim.g.seoul256_contrast = true
+        vim.cmd.colorscheme("seoul256")
+        vim.cmd.hi("phpVarSelector guifg=#FFBFBD")
+        vim.cmd.hi("phpStringSingle guifg=#BCDDBD")
+        vim.cmd.hi("phpStringDouble guifg=#BCDDBD")
+        vim.cmd.hi("phpFunctions guifg=#e2c792")
+        vim.cmd.hi("phpMethods guifg=#e2c792")
+        vim.cmd.hi("phpSpecialFunction guifg=#e2c792")
+        vim.cmd.hi("phpBaselib guifg=#e2c792")
+        vim.cmd.hi("phpNumber guifg=#e55561")
+        vim.cmd.hi("phpFloat guifg=#e55561")
+        vim.cmd.hi("htmlTag guifg=#98BC99")
+        vim.cmd.hi("htmlEndTag guifg=#98BC99")
+        vim.cmd.hi("javaScript guifg=#C8C8C8")
     end,
   },
 }
