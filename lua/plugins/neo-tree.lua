@@ -1,9 +1,3 @@
-vim.keymap.set('n', '<Tab>', [[<Cmd>Neotree toggle<CR>]])
-vim.keymap.set("n", "<C-f>", ":Neotree focus<Return>")
-vim.keymap.set("v", "<C-f>", ":Neotree focus<Return>")
-vim.keymap.set("n", "gs", ":Neotree git_status<Return>")
-vim.keymap.set("v", "gs", ":Neotree git_status<Return>")
-
 vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
 vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
 vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
@@ -46,7 +40,8 @@ return {
     event = "VeryLazy",
     keys = {
         { "<leader>ke", ":Neotree toggle float<CR>", silent = true, desc = "Float File Explorer" },
-        { "<leader><Tab>", ":Neotree toggle left<CR>", silent = true, desc = "Left File Explorer" },
+        { "<Tab>", ":Neotree toggle<CR>", silent = true, desc = "Left File Explorer" },
+        { "gs", ":Neotree git_status<CR>", silent = true, desc = "Left File Explorer" },
     },
     config = function()
         require("neo-tree").setup({
@@ -333,12 +328,13 @@ return {
                         ["<bs>"] = "navigate_up",
                         ["."] = "set_root",
                         ["H"] = "toggle_hidden",
-                        ["/"] = "fuzzy_finder",
+                        ["/"] = "noop",
+                        -- ["/"] = "fuzzy_finder",
                         ["D"] = "fuzzy_finder_directory",
                         ["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
                         -- ["D"] = "fuzzy_sorter_directory",
                         ["f"] = "filter_on_submit",
-                        ["<c-x>"] = "clear_filter",
+                        ["<C-c>"] = "clear_filter",
                         ["[g"] = "prev_git_modified",
                         ["]g"] = "next_git_modified",
                         ["o"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
