@@ -43,19 +43,6 @@ return {
             luasnip.filetype_extend(lang, tbl)
         end
 
-        -- VIM/NeoVIM：解决LuaSnip下Tab按键跳转冲突问题
-        vim.api.nvim_create_autocmd('ModeChanged', {
-            pattern = '*',
-            callback = function()
-                if ((vim.v.event.old_mode == 's' and vim.v.event.new_mode == 'n') or vim.v.event.old_mode == 'i')
-                    and require('luasnip').session.current_nodes[vim.api.nvim_get_current_buf()]
-                    and not require('luasnip').session.jump_active
-                then
-                    require('luasnip').unlink_current()
-                end
-            end
-        })
-
         local kind_icons = {
             Class         = ' ',
             Color         = ' ',
@@ -93,16 +80,39 @@ return {
             return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
         end
 
+        local check_backspace = function()
+            local col = vim.fn.col '.' - 1
+            return col == 0 or vim.fn.getline('.'):sub(col, col):match "%s"
+        end
+
         cmp.setup {
             snippet = {
                 expand = function(args)
                     luasnip.lsp_expand(args.body)
                 end,
             },
+            window = {
+                -- completion = {
+                --   border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+                --   scrollbar = "║",
+                --   winhighlight = 'Normal:CmpMenu,FloatBorder:CmpMenuBorder,CursorLine:CmpSelection,Search:None',
+                --   autocomplete = {
+                --     require("cmp.types").cmp.TriggerEvent.InsertEnter,
+                --     require("cmp.types").cmp.TriggerEvent.TextChanged,
+                --   },
+                -- },
+                documentation = {
+                    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+                    -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+                    scrollbar = "║",
+                },
+            },
 
             mapping = cmp.mapping.preset.insert({
-                ["<C-k>"] = cmp.mapping.select_prev_item(),
-                ["<C-j>"] = cmp.mapping.select_next_item(),
+                ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+                ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+                ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+                ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
                 ['<C-b>'] = cmp.mapping.scroll_docs(-4),
                 ['<C-f>'] = cmp.mapping.scroll_docs(4),
                 ['<C-Space>'] = cmp.mapping.complete(),
@@ -111,19 +121,27 @@ return {
                     c = cmp.mapping.close(),
                 }),
 
+                -- Tab and S-Tab for `luasnip`
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    if luasnip.expandable() then
+                        luasnip.expand()
+                    elseif luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
+                    elseif check_backspace() then
+                        fallback()
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+
                 -- Accept currently selected item.
                 -- Set `select` to `false` to only confirm explicitly selected items.
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
 
                 -- Supertab
-                ['<Tab>'] = cmp.mapping(function(fallback)
-                    local check_backspace = function()
-                        local col = vim.fn.col '.' - 1
-                        return col == 0 or vim.fn.getline('.'):sub(col, col):match "%s"
-                    end
-
-                    if cmp.visible() then
-                        -- cmp.select_next_item()
+                ['<Tab1>'] = cmp.mapping(function(fallback)
+                    if cmp.visible({ behavior = cmp.SelectBehavior.Select }) then
+                        -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         cmp.mapping.confirm({
                             behavior = cmp.ConfirmBehavior.Replace,
                             select = true,

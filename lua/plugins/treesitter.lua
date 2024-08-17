@@ -33,7 +33,7 @@ return {
                 additional_vim_regex_highlighting = false,
             },
             incremental_selection = {
-                enable = false,
+                enable = true,
                 keymaps = {
                     init_selection = "<Cr>",
                     node_incremental = "<Cr>",
