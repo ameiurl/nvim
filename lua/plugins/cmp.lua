@@ -123,26 +123,13 @@ return {
                     c = cmp.mapping.close(),
                 }),
 
-                -- Tab and S-Tab for `luasnip`
-                ["<Tab>"] = cmp.mapping(function(fallback)
-                    if luasnip.expandable() then
-                        luasnip.expand()
-                    elseif luasnip.expand_or_jumpable() then
-                        luasnip.expand_or_jump()
-                    elseif check_backspace() then
-                        fallback()
-                    else
-                        fallback()
-                    end
-                end, { "i", "s" }),
-
                 -- Accept currently selected item.
                 -- Set `select` to `false` to only confirm explicitly selected items.
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
 
                 -- Supertab
-                ['<Tab1>'] = cmp.mapping(function(fallback)
-                    if cmp.visible({ behavior = cmp.SelectBehavior.Select }) then
+                ['<Tab>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
                         -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         cmp.mapping.confirm({
                             behavior = cmp.ConfirmBehavior.Replace,
