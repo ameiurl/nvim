@@ -75,16 +75,6 @@ return {
             Variable      = ' ',
         }
 
-        local has_words_before = function()
-            local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-            return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-        end
-
-        local check_backspace = function()
-            local col = vim.fn.col '.' - 1
-            return col == 0 or vim.fn.getline('.'):sub(col, col):match "%s"
-        end
-
         cmp.setup {
             snippet = {
                 expand = function(args)
@@ -129,6 +119,17 @@ return {
 
                 -- Supertab
                 ['<Tab>'] = cmp.mapping(function(fallback)
+
+                    local has_words_before = function()
+                        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+                        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                    end
+
+                    local check_backspace = function()
+                        local col = vim.fn.col '.' - 1
+                        return col == 0 or vim.fn.getline('.'):sub(col, col):match "%s"
+                    end
+
                     if cmp.visible() then
                         -- cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                         cmp.mapping.confirm({
@@ -178,10 +179,10 @@ return {
             },
 
             sources = {
+                { name = 'luasnip', options = { show_autosnippets = true } },
                 { name = 'nvim_lsp' },
                 { name = 'nvim_lsp_signature_help' },
                 { name = 'nvim_lua' },
-                { name = 'luasnip', options = { show_autosnippets = true } },
                 { name = 'buffer' },
                 { name = 'path' },
             },
